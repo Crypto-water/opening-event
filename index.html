@@ -161,6 +161,61 @@
                 <div class="text-gray-400">남은 5회 세레모니<br>자동으로 참여!</div>
             </div>
         </div>
+
+
+        
+ <!-- 구매 방법 안내 섹션 -->
+            <div id="how-to-participate" class="w-full mb-32 text-left relative">
+                <h2 class="text-lg font-black mb-8 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-play text-blue-500 animate-pulse"></i>
+                    간편 참여 방법 (3단계)
+                </h2>
+                
+                <div class="space-y-10 relative">
+                    <!-- Step 1 -->
+                    <div class="step-reveal relative flex items-start gap-4 z-10" data-delay="0">
+                        <div class="step-line"></div>
+                        <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-black shrink-0 text-sm shadow-[0_0_15px_rgba(37,99,235,0.5)]">1</div>
+                        <div class="glass-card p-5 rounded-2xl w-full border-blue-600/30">
+                            <div class="font-bold text-base mb-1">공식 사이트 회원가입</div>
+                            <p class="text-gray-400 text-xs leading-relaxed">
+                                <a href="https://www.crypto-water.com" target="_blank" class="text-blue-400 font-bold underline underline-offset-4">www.crypto-water.com</a><br>
+                                접속 후 간단한 절차로 가입 완료!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-reveal relative flex items-start gap-4 z-10" data-delay="200">
+                        <div class="step-line"></div>
+                        <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-black shrink-0 text-sm shadow-[0_0_15px_rgba(37,99,235,0.5)]">2</div>
+                        <div class="glass-card p-5 rounded-2xl w-full border-blue-600/30">
+                            <div class="font-bold text-base mb-1">크립토 워터 구매하기</div>
+                            <p class="text-gray-400 text-xs leading-relaxed">생수 구매와 동시에 비트코인 잭팟 이벤트에 자동으로 응모됩니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-reveal relative flex items-start gap-4 z-10" data-delay="400">
+                        <div class="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black shrink-0 text-sm shadow-[0_0_20px_rgba(249,115,22,0.6)] animate-pulse">3</div>
+                        <div class="glass-card p-5 rounded-2xl w-full border-orange-500 bg-orange-500/10 scale-105 origin-left shadow-[0_0_25px_rgba(249,115,22,0.15)]">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="font-black text-base text-orange-400">지갑 주소 등록</div>
+                                <span class="bg-orange-500 text-black text-[10px] font-black px-2 py-0.5 rounded italic">MUST!</span>
+                            </div>
+                            <p class="text-gray-200 text-xs font-medium leading-relaxed">
+                                당첨금 수령을 위해 <span class="text-white font-bold underline decoration-orange-500 underline-offset-4">BTC 및 ETH 지갑 주소</span>를 반드시 등록하세요!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        
     </main>
 
     <!-- 하단 구매 버튼 (Floating) -->
@@ -176,7 +231,7 @@
         </div>
     </div>
 
-    <script>
+     <script>
         const targetDate = new Date("May 30, 2026 23:59:59").getTime();
 
         function updateCountdown() {
@@ -185,7 +240,10 @@
 
             if (distance < 0) {
                 const els = ["days", "hours", "minutes", "seconds"];
-                els.forEach(id => document.getElementById(id).innerText = "00");
+                els.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = "00";
+                });
                 return;
             }
 
@@ -200,14 +258,15 @@
             document.getElementById("seconds").innerText = String(s).padStart(2, '0');
         }
 
-        // 비트코인 시세 시뮬레이션 (제공된 1억 1,900만 원 기준)
         let currentBtc = 119000000;
         function updateBtcPrice() {
             const change = (Math.random() * 20000) - 10000;
             currentBtc += change;
             
-            document.getElementById("current-btc-price").innerText = Math.floor(currentBtc).toLocaleString() + "원";
-            document.getElementById("btc-value-krw").innerText = Math.floor(currentBtc * 0.01).toLocaleString() + "원";
+            const elPrice = document.getElementById("current-btc-price");
+            const elValue = document.getElementById("btc-value-krw");
+            if(elPrice) elPrice.innerText = Math.floor(currentBtc).toLocaleString() + "원";
+            if(elValue) elValue.innerText = Math.floor(currentBtc * 0.01).toLocaleString() + "원";
         }
 
         let baseProb = 4.24; 
@@ -215,19 +274,53 @@
             let fluctuation = (Math.random() * 0.04) - 0.02;
             let currentProb = (baseProb + fluctuation).toFixed(2);
             
-            document.getElementById("win-prob").innerText = currentProb + "%";
-            
-            const barWidth = Math.max(10, Math.min(95, currentProb * 10)); 
-            document.getElementById("prob-bar").style.width = barWidth + "%";
+            const elProb = document.getElementById("win-prob");
+            const elBar = document.getElementById("prob-bar");
+            if(elProb) elProb.innerText = currentProb + "%";
+            if(elBar) {
+                const barWidth = Math.max(10, Math.min(95, currentProb * 10)); 
+                elBar.style.width = barWidth + "%";
+            }
         }
 
+        // 스크롤 감지 애니메이션 개선
+        const initRevealAnimation = () => {
+            const steps = document.querySelectorAll('.step-reveal');
+            
+            // Intersection Observer 지원 확인
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const delay = parseInt(entry.target.getAttribute('data-delay') || 0);
+                            setTimeout(() => {
+                                entry.target.classList.add('active');
+                            }, delay);
+                            // 한 번 나타나면 감시 중단
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                steps.forEach(step => observer.observe(step));
+            } else {
+                // 미지원 브라우저 대응: 즉시 표시
+                steps.forEach(step => step.classList.add('active'));
+            }
+        };
+
+        // 로드 시 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            updateBtcPrice();
+            updateStats();
+            initRevealAnimation();
+        });
+
+        // 타이머 및 시세 업데이트
         setInterval(updateCountdown, 1000);
         setInterval(updateBtcPrice, 2000);
         setInterval(updateStats, 4000);
-        
-        updateCountdown();
-        updateBtcPrice();
-        updateStats();
     </script>
 </body>
 </html>
